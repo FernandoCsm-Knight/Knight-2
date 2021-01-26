@@ -8,6 +8,15 @@ from keep_alive import keep_alive
 intents = discord.Intents.all()
 client = discord.Client(intents=intents)
 
+inspiração = [['Não vemos as coisas como elas são, mas como nós somos.', '**Anaïs Nin**'], ['A moral é a debilidade do cérebro.', '**Arthur Rimbaud**'], 
+['Há livros escritos para evitar espaços vazios na estante.', '**Carlos Drummond de Andrade**'], 
+['Engolimos de uma vez a mentira que nos adula e bebemos gota a gota a verdade que nos amarga.', '**Denis Diderot**'], 
+['Políticos e fraldas devem ser trocados de tempos em tempos pelo mesmo motivo.', '**Eça de Queiróz**'], ['Felicidade em pessoas inteligentes é a coisa mais rara que conheço.', '**Ernest Hemingway**'], 
+['Em tempos de embustes universais, dizer a verdade se torna um ato revolucionário.', '**George Orwell**'], ['É permissível a cada um de nós morrer pela sua fé, mas não matar por ela.', '**Hermann Hesse**'],
+['Algo deve mudar para que tudo continue como está.', '**Giuseppe Tomasi di Lampedusa**'], ['Tenha cuidado com a tristeza. É um vício.', '**Gustave Flaubert**'], 
+['Não há mentira pior do que uma verdade mal compreendida por aqueles que a ouvem.', '**Henry James**'], ['A graça de cair é se machucar!', '**Fernando Dal Maria**'], 
+['A democracia é um erro estatístico, porque na democracia decide a maioria e a maioria é formada de imbecis.', '**Jorge Luis Borges**'], 
+['A solidão é a mãe da sabedoria.', '**Laurence Sterne**'], ['Aquele que lê maus livros não leva vantagem sobre aquele que não lê livro nenhum.', '**Mark Twain**']]
 
 @client.event
 async def on_ready():
@@ -228,6 +237,21 @@ async def on_message(message):
             await message.channel.send(
                 f'{message.author.mention}Você precisa digitar a denúncia após digitar o comando, exemplo:\n'
                 '```>denúncia Quero fazer uma denúncia.```')
+            
+   if message.content.startswith('>inspiração'):
+      meinspire = choice(inspiração)
+      embed5 = discord.Embed(title=f'{meinspire[1]} disse:',
+                            description=f'{meinspire[0]}',
+                            color=0x27E320)
+      embed5.set_footer(text='Staff do servidor Jealous King.',
+                        icon_url='https://imgur.com/GMWIN4J.jpg')
+      if meinspire[0] == 'A democracia é um erro estatístico, porque na democracia decide a maioria e a maioria é formada de imbecis.':
+        embed5 = discord.Embed(title=f'{meinspire[1]} disse:',
+                              description=f'{meinspire[0]}',
+                              color=0x008000)
+        embed5.set_footer(text='Esse aqui é um bom easter egg!',
+                        icon_url='https://imgur.com/GMWIN4J.jpg')
+      await message.channel.send(embed=embed5)            
 
     channel0 = client.get_channel([id do canal em que todas as mensagens recebem uma reação predefinida])
     if message.channel == channel0:
