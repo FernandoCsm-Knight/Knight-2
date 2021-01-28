@@ -177,8 +177,9 @@ async def on_message(message):
                     f'{date.today().day}/{date.today().month}/{date.today().year}'
                 )
                 mensagemsugestoes = await channel.send(embed=embed2)
-                await mensagemsugestoes.add_reaction('✅')
                 await mensagemsugestoes.add_reaction('❎')
+                await mensagemsugestoes.add_reaction('✅')
+                await mensagemsugestões.add_reaction('❗')
                 await message.channel.send(
                     f'{message.author.mention} sua mensagem foi enviada com secesso!'
                 )
@@ -243,7 +244,7 @@ async def on_message(message):
                 f'{message.author.mention}Você precisa digitar a denúncia após digitar o comando, exemplo:\n'
                 '```>denúncia Quero fazer uma denúncia.```')
             
-   if message.content.startswith('>inspiração'):
+    if message.content.startswith('>inspiração'):
         meinspire = choice(inspiração)
         embed5 = discord.Embed(title=f'{meinspire[1]} disse:',
                                description=f'{meinspire[0]}',
@@ -280,12 +281,44 @@ async def on_message(message):
                          inline=False)
         embed6.set_footer(text='Staff do servidor [nome do seu servoidor]!',
                           icon_url='[link da imagem do seu footer]')
-        await message.channel.send(embed=embed6)    
+        await message.channel.send(embed=embed6)   
+
+    if message.content.startswith('>ping'):
+        args = message.content.split()
+        if len(args) == 1:
+            p = (client.latency) * 1000
+            await message.channel.send(f'Pong! [{p:.0f}ms]')        
     
     channel0 = client.get_channel([id do canal em que todas as mensagens recebem uma reação predefinida])
     if message.channel == channel0:
         await message.add_reaction('[\emoji da reação que você quer que seja adicionada]')
 
+        
+@client.event
+async def on_raw_reaction_add(payload):
+    channel = 789758660980899870
+    if payload.member.id == client.user.id:
+        return
+    if payload.channel_id != channel:
+        return
+    channel01 = client.get_channel(channel)
+    msg00 = await channel01.fetch_message(payload.message_id)
+    if payload.emoji.name == '✅':
+        msg01 = msg00.reactions
+        contagem = msg01[1].count
+        if contagem >= 3:
+            channel02 = client.get_channel(798607207246725130)
+            msg02 = msg00.embeds[0]
+            msg03 = await channel02.send(embed=msg02)
+            await msg03.add_reaction('✅')
+            await msg03.add_reaction('❎')
+            await msg00.clear_reaction('✅')
+    if payload.emoji.name == '❎':
+        msg01 = msg00.reactions
+        contagem = msg01[0].count
+        if contagem >= 3:
+            await msg00.delete()
+ 
 
 @client.event
 async def on_member_join(member):
