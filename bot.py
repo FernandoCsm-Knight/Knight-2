@@ -296,7 +296,7 @@ async def on_message(message):
         
 @client.event
 async def on_raw_reaction_add(payload):
-    channel = 789758660980899870
+    channel = [id do canal para onde irão as sugestões ainda sem aprovação]
     if payload.member.id == client.user.id:
         return
     if payload.channel_id != channel:
@@ -307,7 +307,7 @@ async def on_raw_reaction_add(payload):
         msg01 = msg00.reactions
         contagem = msg01[1].count
         if contagem >= 3:
-            channel02 = client.get_channel(798607207246725130)
+            channel02 = client.get_channel([id do canal de sugestões aprovadas])
             msg02 = msg00.embeds[0]
             msg03 = await channel02.send(embed=msg02)
             await msg03.add_reaction('✅')
