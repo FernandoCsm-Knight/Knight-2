@@ -54,6 +54,11 @@ async def on_message(message):
             value='Esse comando serve para comprimentar o Bot.',
             inline=False)
         embed0.add_field(
+            name='>formatação',
+            value=
+            'Esse comando retorna algumas diocas sobre formatação de texto no discord.',
+            inline=False)        
+        embed0.add_field(
             name='>sugestões [mensagem]',
             value=
             'Esse comando pode ser utilizado para fazer uma sugestão para o servidor, tanto para implementar novos canais ou funcionalidades no servidor, quanto para alterar/criar regras e/ou comandos.',
@@ -239,20 +244,44 @@ async def on_message(message):
                 '```>denúncia Quero fazer uma denúncia.```')
             
    if message.content.startswith('>inspiração'):
-      meinspire = choice(inspiração)
-      embed5 = discord.Embed(title=f'{meinspire[1]} disse:',
-                            description=f'{meinspire[0]}',
-                            color=0x27E320)
-      embed5.set_footer(text='Staff do servidor Jealous King.',
-                        icon_url='https://imgur.com/GMWIN4J.jpg')
-      if meinspire[0] == 'A democracia é um erro estatístico, porque na democracia decide a maioria e a maioria é formada de imbecis.':
+        meinspire = choice(inspiração)
         embed5 = discord.Embed(title=f'{meinspire[1]} disse:',
-                              description=f'{meinspire[0]}',
-                              color=0x008000)
-        embed5.set_footer(text='Esse aqui é um bom easter egg!',
-                        icon_url='https://imgur.com/GMWIN4J.jpg')
+                               description=f'{meinspire[0]}',
+                               color=0x27E320)
+        embed5.set_footer(text='Staff do servidor Jealous King.',
+                          icon_url='https://imgur.com/GMWIN4J.jpg')
+      if meinspire[0] == 'A democracia é um erro estatístico, porque na democracia decide a maioria e a maioria é formada de imbecis.':
+            embed5 = discord.Embed(title=f'{meinspire[1]} disse:',
+                                   description=f'{meinspire[0]}',
+                                   color=0x008000)
+            embed5.set_footer(text='Esse aqui é um bom easter egg!',
+                              icon_url='https://imgur.com/GMWIN4J.jpg')
       await message.channel.send(embed=embed5)            
 
+    if message.content.startswith('>formatação'):
+        embed6 = discord.Embed(title='Formatação Básica de mensagens.',
+                               description='Para aprender a escrevere colorido procure o **[seu nome]**.',
+                               color=0x5F9EA0) \\aqui a descrição é opcional
+        embed6.set_author(name='Para mais informações você pode clicar aqui!',
+                          url='https://support.discord.com/hc/pt-br/articles/210298617-No%C3%A7%C3%B5es-b%C3%A1sicas-de-marca%C3%A7%C3%A3o-de-texto-Formata%C3%A7%C3%A3o-do-chat-negrito-it%C3%A1lico-e-sublinhado-')
+        embed6.set_image(url='https://imgur.com/IasLmjN.jpg')
+        embed6.set_thumbnail(url='[link da imagem thumbnail]')
+        embed6.add_field(name='Negrito, Itálico e Sublinhado.',
+                         value='Seguem na tabela abaixo.',
+                         inline=False)
+        embed6.add_field(name='Mensagens escondidas: ||Alo!||',
+                         value='Digite `||` [mensagem] `||`.',
+                         inline=False)
+        embed6.add_field(name='Blocos de código.',
+                         value="1 linha = utilize `[crase]` [mensagem] `[crase]`.\n 2 linhas ou mais = utilize `[3 crases]` [mensagem] `[3 crases]`.",
+                         inline=False)
+        embed6.add_field(name='Mensagem riscada: ~~Alo!~~',
+                         value='Digite `~~` [mensagem] `~~`.',
+                         inline=False)
+        embed6.set_footer(text='Staff do servidor [nome do seu servoidor]!',
+                          icon_url='[link da imagem do seu footer]')
+        await message.channel.send(embed=embed6)    
+    
     channel0 = client.get_channel([id do canal em que todas as mensagens recebem uma reação predefinida])
     if message.channel == channel0:
         await message.add_reaction('[\emoji da reação que você quer que seja adicionada]')
