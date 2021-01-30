@@ -75,6 +75,10 @@ async def on_message(message):
             value=
             'Devolve algumas informações a respeito do usuário citado no comando.',
             inline=False)
+        embed0.add_field(
+            name='>weather [nome da Cidade ou Estado ou País]',
+            value='Retorna as informações do tempo no local mensionado.',
+            inline=False)
         await message.channel.send(embed=embed0)
 
     if message.content.startswith('>clear'):
