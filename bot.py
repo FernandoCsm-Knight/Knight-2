@@ -4,6 +4,8 @@ import discord
 from discord import Member
 from datetime import date
 from keep_alive import keep_alive
+import json
+import requests
 
 intents = discord.Intents.all()
 client = discord.Client(intents=intents)
@@ -294,7 +296,7 @@ async def on_message(message):
         if len(args) >= 2:
             args.pop(0)
             argsweather = ' '.join(args)
-            key = '41150639db4ff22f83b904933dd2905d'
+            key = '[chave de acesso]'
             url = f'http://api.openweathermap.org/data/2.5/weather?q={argsweather}&appid={key}&units=metric'
             data = json.loads(requests.get(url).content)
             nome = data['name']
