@@ -287,7 +287,67 @@ async def on_message(message):
         args = message.content.split()
         if len(args) == 1:
             p = (client.latency) * 1000
-            await message.channel.send(f'Pong! [{p:.0f}ms]')        
+            await message.channel.send(f'Pong! [{p:.0f}ms]') 
+            
+    if message.content.startswith('>weather'):
+        args = message.content.split()
+        if len(args) >= 2:
+            args.pop(0)
+            argsweather = ' '.join(args)
+            key = '41150639db4ff22f83b904933dd2905d'
+            url = f'http://api.openweathermap.org/data/2.5/weather?q={argsweather}&appid={key}&units=metric'
+            data = json.loads(requests.get(url).content)
+            nome = data['name']
+            pais = data['sys']['country']
+            coordenadaslon = data['coord']['lon']
+            coordenadaslat = data['coord']['lat']
+            climaestado = data['weather'][0]['description']
+            climamain = data['weather'][0]['main']
+            temperatura1 = data['main']['temp']
+            temperatura2 = data['main']['feels_like']
+            humidade = data['main']['humidity']
+            velocidadevento = data['wind']['speed']
+            pressao = data['main']['pressure']
+            visibilidade = data['visibility']
+            urlid = data['id']
+            embed7 = discord.Embed(title=' ',
+                                   description=f'Tempo em {nome}-{pais}',
+                                   color=0xF62A71)
+            embed7.set_author(name='Bot Knight [>weather].',
+                              url=f'https://openweathermap.org/city/{urlid}',
+                              icon_url='https://imgur.com/DIsxf3O.jpg')
+            embed7.set_thumbnail(url='https://imgur.com/DIsxf3O.jpg')
+            embed7.set_footer(text='Staff do servidor Jealous King.',
+                              icon_url='https://imgur.com/GMWIN4J.jpg')
+            embed7.add_field(
+                name='Longitude(lon) e Latitude(lat).',
+                value=f'lon = {coordenadaslon} \nlat = {coordenadaslat}.',
+                inline=True)
+            embed7.add_field(
+                name='Tempo:',
+                value=f'{climamain.title()} with {climaestado.title()}',
+                inline=True)
+            embed7.add_field(
+                name='Temperatura:',
+                value=f'{temperatura1:.0f}°C/{(temperatura1 * 9/5) + 32:.0f}°F',
+                inline=True)
+            embed7.add_field(
+                name='Sensação Térmica:',
+                value=f'{temperatura2:.0f}°C/{(temperatura2 * 9/5) + 32:.0f}°F',
+                inline=True)
+            embed7.add_field(name='Humidade:',
+                             value=f'{humidade}%',
+                             inline=True)
+            embed7.add_field(name='Vento (velocidade):',
+                             value=f'{velocidadevento:.2f} m/s',
+                             inline=True)
+            embed7.add_field(name='Pressão atmosférica:',
+                             value=f'{pressao * 0.000986923266716013:.2f} atm',
+                             inline=True)
+            embed7.add_field(name='Visibilidade:',
+                             value=f'{visibilidade / 1000:.2f} km',
+                             inline=True)
+            await message.channel.send(embed=embed7)       
     
     channel0 = client.get_channel([id do canal em que todas as mensagens recebem uma reação predefinida])
     if message.channel == channel0:
