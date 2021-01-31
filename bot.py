@@ -6,6 +6,7 @@ from datetime import date
 from keep_alive import keep_alive
 import json
 import requests
+from bs4 import BeautifulSoup
 
 intents = discord.Intents.all()
 client = discord.Client(intents=intents)
