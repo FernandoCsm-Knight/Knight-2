@@ -59,6 +59,11 @@ async def on_message(message):
             name='>formatação',
             value=
             'Esse comando retorna algumas diocas sobre formatação de texto no discord.',
+            inline=False)
+        embed0.add_field(
+            name='>G1',
+            value=
+            'Esse comando só pode ser usado no canal de notícias do servidor. Com >G1 [mensagem] você pode pesquisar a mensagem no site do G1, ao digitar somente >G1 você receberá as notícias do dia.',
             inline=False)        
         embed0.add_field(
             name='>sugestões [mensagem]',
@@ -321,10 +326,10 @@ async def on_message(message):
                                    color=0xF62A71)
             embed7.set_author(name='Bot Knight [>weather].',
                               url=f'https://openweathermap.org/city/{urlid}',
-                              icon_url='https://imgur.com/DIsxf3O.jpg')
-            embed7.set_thumbnail(url='https://imgur.com/DIsxf3O.jpg')
-            embed7.set_footer(text='Staff do servidor Jealous King.',
-                              icon_url='https://imgur.com/GMWIN4J.jpg')
+                              icon_url='[link do icone do autor]')
+            embed7.set_thumbnail(url='[link da imagem da thumbnail]')
+            embed7.set_footer(text='Staff do servidor [nome do seu servidor].',
+                              icon_url='[link da imagem do seu footer]')
             embed7.add_field(
                 name='Longitude(lon) e Latitude(lat).',
                 value=f'lon = {coordenadaslon} \nlat = {coordenadaslat}.',
@@ -353,7 +358,104 @@ async def on_message(message):
             embed7.add_field(name='Visibilidade:',
                              value=f'{visibilidade / 1000:.2f} km',
                              inline=True)
-            await message.channel.send(embed=embed7)       
+            await message.channel.send(embed=embed7)
+            
+    if message.content.startswith('>G1'):
+        canalg1 = client.get_channel([id do canal onde esse comando será usado])
+        if message.channel != canalg1:
+            return
+        args = message.content.split()
+        listag1 = []
+        try:
+            if len(args) == 1:
+                site = requests.get('https://g1.globo.com')
+                content = site.content
+                sitenovo = BeautifulSoup(content, 'html.parser')
+                noticia = sitenovo.find_all('div',
+                                            attrs={'class': 'feed-post-body'})
+                for x in range(0, 5):
+                    link0 = noticia[x].find(
+                        'a',
+                        attrs={
+                            'class':
+                            'feed-post-link gui-color-primary gui-color-hover'
+                        })
+                    titulo = link0.text
+                    link1 = link0.attrs
+                    link2 = link1['href']
+                    subtitulo = noticia[x].find(
+                        'div', attrs={'class': 'feed-post-body-resumo'})
+                    if subtitulo == None:
+                        listag1.append(
+                            f'`G1` \n \n __**{titulo}**__ \n \n LINK: {link2} \n 🗒️'
+                        )
+                    else:
+                        subtitulo1 = subtitulo.text
+                        listag1.append(
+                            f'`G1` \n \n __**{titulo}**__ \n {subtitulo1} \n \n LINK: {link2} \n 🗒️'
+                        )
+                embednoticias = discord.Embed(title='☕ Notícias do dia! 🗞️',
+                                              description='',
+                                              color=0xa80000)
+                embednoticias.set_thumbnail(
+                    url='[link da imagem da thumbnail]')
+                for arquivo in range(0, len(listag1)):
+                    embednoticias.add_field(name=f'📰 Notícia {arquivo + 1}',
+                                            value=f'{listag1[arquivo]}',
+                                            inline=False)
+                embednoticias.set_footer(
+                    text='Staff do servidor [nome do seu servidor]',
+                    icon_url='[link da imagem do seu footer]')
+                await message.channel.send(embed=embednoticias)
+            if len(args) >= 2:
+                args.pop(0)
+                busca = '+'.join(args)
+                embedtitle = ' '.join(args)
+                site = requests.get(f'https://g1.globo.com/busca/?q={busca}')
+                content = site.content
+                sitenovo = BeautifulSoup(content, 'html.parser')
+                noticia = sitenovo.find_all(
+                    'li', attrs={'class': 'widget widget--card widget--info'})
+                for x in range(0, 5):
+                    link0 = noticia[x].find(
+                        'div', attrs={'class': 'widget--info__text-container'})
+                    info = noticia[x].find('div',
+                                           attrs={
+                                               'class': 'widget--info__header'
+                                           }).text
+                    link1 = link0.find('a', href=True)
+                    link2 = link1.attrs
+                    link3 = link2['href']
+                    titulo = noticia[x].find(
+                        'div',
+                        attrs={
+                            'class': 'widget--info__title product-color'
+                        }).text.strip()
+                    subtitulo = noticia[x].find(
+                        'p', attrs={'class': 'widget--info__description'})
+                    subtitulo1 = subtitulo.text
+                    listag1.append(
+                        f'`{info}` \n \n __**{titulo}**__ \n {subtitulo1} \n \n LINK: https:{link3} \n 📢'
+                    )
+                embedg1 = discord.Embed(
+                    title=f'🔎 Notícias no G1 sobre {embedtitle} 🔍',
+                    description='',
+                    color=0xa80000)
+                for arquivo in range(0, len(listag1)):
+                    embedg1.add_field(name=f'📰 Notícia {arquivo + 1}',
+                                      value=f'{listag1[arquivo]}',
+                                      inline=False)
+                embedg1.set_thumbnail(url='[link da imagem da thumbnail]')
+                embedg1.set_footer(text='Staff do servidor [nome do seu servidor]',
+                                   icon_url='[link da imagem do seu footer]')
+                await message.channel.send(embed=embedg1)
+        except IndexError as erro:
+            msgg1 = await message.channel.send(
+                f'{message.author.mention} **não há resultados para essa pesquisa no G1.** `{erro}`'
+            )
+            sleep(5)
+            await msgg1.delete()
+            await message.delete()            
     
     channel0 = client.get_channel([id do canal em que todas as mensagens recebem uma reação predefinida])
     if message.channel == channel0:
