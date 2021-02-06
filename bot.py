@@ -56,15 +56,14 @@ async def on_message(message):
                 f'{message.author.mention} nesse canal você só pode utilizar o comando >G1[mensagem]. Para saber mais sobre esse comando utilize >help em outro canal de texto do servidor.'
             )
             await message.delete()
-            sleep(5)
-            await alo1.delete()    
+            await alo1.delete(delay=5)    
     
     if message.content.startswith('>help'):
         embed0 = discord.Embed(
             title=f'Bem vindo ao embed de ajuda do [nome do seu bot]!',
             description=f' ',
             color=0xFFFAFA)
-        embed0.set_thumbnail(url='[link da thumbnail do seu embed]')
+        embed0.set_thumbnail(url='[link da imagem da sua thumbnaill]')
         embed0.set_footer(
             text='Staff do servidor [nome do seu servidor].',
             icon_url='[link da imagem do seu footer.]')
@@ -114,6 +113,10 @@ async def on_message(message):
                         f'{len(deleted) - 1} mensagens foram deletadas.')
                     sleep(2)
                     await msg.delete()
+        else:
+            msg = await meszage.content.send(f'{message.author.mention} você não tem permissão para usar esse comando.')
+            await message.delete()
+            await msg.delete(delay=5)
 
     if message.content.startswith('>userinfo'):
         args = message.content.split(' ')
