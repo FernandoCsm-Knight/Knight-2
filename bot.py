@@ -41,8 +41,24 @@ async def status_task():
 
 @client.event
 async def on_message(message):
+
+    if message.guild.id != [id do seu server]:
+        return
+    
     if message.author.bot:
         return
+    
+    canal12 = client.get_channel([id do canal em que seerá permitido o comando >G1])
+    if message.channel == canal12:
+        alo = message.content.split()
+        if alo[0] not in ['>G1', '>clear']:
+            alo1 = await message.channel.send(
+                f'{message.author.mention} nesse canal você só pode utilizar o comando >G1[mensagem]. Para saber mais sobre esse comando utilize >help em outro canal de texto do servidor.'
+            )
+            await message.delete()
+            sleep(5)
+            await alo1.delete()    
+    
     if message.content.startswith('>help'):
         embed0 = discord.Embed(
             title=f'Bem vindo ao embed de ajuda do [nome do seu bot]!',
