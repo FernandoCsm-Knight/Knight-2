@@ -4,6 +4,7 @@ import discord
 from discord import Member
 from datetime import date
 from keep_alive import keep_alive
+from random import choice, randint
 import json
 import requests
 from bs4 import BeautifulSoup
