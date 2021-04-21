@@ -51,7 +51,7 @@ async def on_message(message):
     canal12 = client.get_channel([id do canal em que seerá permitido o comando >G1])
     if message.channel == canal12:
         alo = message.content.split()
-        if alo[0] not in ['>G1', '>clear']:
+        if alo[0] not in ['>G1', '>clear', '>BBC']:
             alo1 = await message.channel.send(
                 f'{message.author.mention} nesse canal você só pode utilizar o comando >G1[mensagem]. Para saber mais sobre esse comando utilize >help em outro canal de texto do servidor.'
             )
@@ -154,7 +154,194 @@ async def on_message(message):
                 sleep(5)
                 await msgg1.delete()
                 await message.delete()    
-    
+                
+        if message.content.startswith('>BBC'):
+            args = message.content.split()
+            listaBBC = []
+            try:
+                if len(args) == 1:
+                    siteBBC = requests.get(
+                        'https://www.bbc.com/portuguese/topics/cz74k717pw5t')
+                    contentBBC = siteBBC.content
+                    sitenovoBBC = BeautifulSoup(contentBBC, 'html.parser')
+                    noticiaBBC = sitenovoBBC.find_all(
+                        'li', attrs={'class': 'lx-stream__post-container'})
+                    noticia1 = sitenovoBBC.find(
+                        'li',
+                        attrs={
+                            'class':
+                            'lx-stream__post-container placeholder-animation-finished'
+                        })
+                    imagem = noticia1.find('img')
+                    imagem2 = imagem['src']
+
+                    for x in range(0, 5):
+                        titulolinkBBC = noticiaBBC[x].find(
+                            'a',
+                            attrs={
+                                'class':
+                                'qa-heading-link lx-stream-post__header-link'
+                            })
+                        titulo = titulolinkBBC.find(
+                            'span',
+                            attrs={
+                                'class':
+                                'lx-stream-post__header-text gs-u-align-middle'
+                            }).text
+                        link2 = titulolinkBBC['href']
+                        subtitulo = noticiaBBC[x].find(
+                            'p',
+                            attrs={
+                                'class':
+                                'lx-stream-related-story--summary qa-story-summary'
+                            }).text
+                        info = noticiaBBC[x].find(
+                            'span',
+                            attrs={
+                                'class': 'gs-u-vh qa-visually-hidden-meta'
+                            }).text
+                        if subtitulo == None:
+                            listaBBC.append(
+                                f'`{info}`\n \n__**{titulo}**__\n \nLINK: https://www.bbc.com{link2} \n 🗒️'
+                            )
+                        else:
+                            listaBBC.append(
+                                f'`{info}`\n \n__**{titulo}**__\n{subtitulo}\n \nLINK: https://www.bbc.com{link2} \n 🗒️'
+                            )
+                    embedBBC = discord.Embed(
+                        title='☕ Notícias do dia na BBC News Brasil! 🗞️',
+                        description='',
+                        color=0xb80000)
+                    embedBBC.set_author(
+                        name='Ir para a BBC News Brasil.',
+                        url=
+                        'https://www.bbc.com/portuguese/topics/cz74k717pw5t',
+                        icon_url=[link da imagem do seu author])
+                    for arquivo in range(0, len(listaBBC)):
+                        embedBBC.add_field(name=f'📰 Notícia {arquivo + 1}',
+                                           value=f'{listaBBC[arquivo]}',
+                                           inline=False)
+                    embedBBC.set_thumbnail(url=f'{imagem2}')
+                    embedBBC.set_footer(
+                        text='Staff do servidor [nome do seu servidor].',
+                        icon_url=[link da imagem do seu footer])
+                    await message.channel.send(embed=embedBBC)
+
+                if len(args) == 2:
+                    if args[1] == 'world':
+                        siteBBC = requests.get(
+                            'https://www.bbc.com/news/world')
+                        contentBBC = siteBBC.content
+                        sitenovoBBC = BeautifulSoup(contentBBC, 'html.parser')
+                        noticiaBBC = sitenovoBBC.find_all(
+                            'div',
+                            attrs={
+                                'class':
+                                'gs-c-promo gs-t-News nw-c-promo gs-o-faux-block-link gs-u-pb gs-u-pb+@m nw-p-default gs-c-promo--inline gs-c-promo--stacked@m gs-c-promo--flex'
+                            })
+                        noticia1 = sitenovoBBC.find(
+                            'div',
+                            attrs={
+                                'class':
+                                'gs-c-promo gs-t-News nw-c-promo gs-o-faux-block-link gs-u-pb gs-u-pb+@m nw-p-default gs-c-promo--inline@m gs-c-promo--stacked@xxl gs-c-promo--flex'
+                            })
+                        info = noticia1.find('span',
+                                             attrs={
+                                                 'class': 'gs-u-vh'
+                                             }).text
+                        link = noticia1.find(
+                            'a',
+                            attrs={
+                                'class':
+                                'gs-c-promo-heading gs-o-faux-block-link__overlay-link gel-paragon-bold gs-u-mt+ nw-o-link-split__anchor'
+                            })
+                        link2 = link['href']
+                        titulo = noticia1.find(
+                            'h3',
+                            attrs={
+                                'class':
+                                'gs-c-promo-heading__title gel-paragon-bold gs-u-mt+ nw-o-link-split__text'
+                            }).text
+                        subtitulo = noticia1.find(
+                            'p',
+                            attrs={
+                                'class':
+                                'gs-c-promo-summary gel-long-primer gs-u-mt nw-c-promo-summary'
+                            }).text
+                        imagem = noticia1.find('img')
+                        imagem2 = imagem['src']
+                        if subtitulo == None:
+                            listaBBC.append(
+                                f'`{info}`\n \n__**{titulo}**__\n \nLINK: https://www.bbc.com{link2} \n 🗒️'
+                            )
+                        else:
+                            listaBBC.append(
+                                f'`{info}`\n \n__**{titulo}**__\n{subtitulo}\n \nLINK: https://www.bbc.com{link2} \n 🗒️'
+                            )
+
+                        for x in range(0, 4):
+                            titulolinkBBC = noticiaBBC[x].find(
+                                'a',
+                                attrs={
+                                    'class':
+                                    'gs-c-promo-heading gs-o-faux-block-link__overlay-link gel-pica-bold nw-o-link-split__anchor'
+                                })
+                            titulo = titulolinkBBC.find(
+                                'h3',
+                                attrs={
+                                    'class':
+                                    'gs-c-promo-heading__title gel-pica-bold nw-o-link-split__text'
+                                }).text
+                            link2 = titulolinkBBC['href']
+                            subtitulo = noticiaBBC[x].find(
+                                'p',
+                                attrs={
+                                    'class':
+                                    'gs-c-promo-summary gel-long-primer gs-u-mt nw-c-promo-summary gs-u-display-none gs-u-display-block@m'
+                                }).text
+                            info = noticiaBBC[x].find('span',
+                                                      attrs={
+                                                          'class': 'gs-u-vh'
+                                                      }).text
+                            if subtitulo == None:
+                                listaBBC.append(
+                                    f'`{info}`\n \n__**{titulo}**__\n \nLINK: https://www.bbc.com{link2} \n 🗒️'
+                                )
+                            else:
+                                listaBBC.append(
+                                    f'`{info}`\n \n__**{titulo}**__\n{subtitulo}\n \nLINK: https://www.bbc.com{link2} \n 🗒️'
+                                )
+                        embedBBC = discord.Embed(
+                            title='☕ Notícias do dia na BBC News World! 🗞️',
+                            description='',
+                            color=0xb80000)
+                        embedBBC.set_author(
+                            name='Ir para a BBC World.',
+                            url='https://www.bbc.com/news/world',
+                            icon_url=[link da imagem do seu author])
+                        for arquivo in range(0, len(listaBBC)):
+                            embedBBC.add_field(name=f'📰 Notícia {arquivo + 1}',
+                                               value=f'{listaBBC[arquivo]}',
+                                               inline=False)
+                        embedBBC.set_thumbnail(url=f'{imagem2}')
+                        embedBBC.set_footer(
+                            text='Staff do servidor [nome do seu servidor].',
+                            icon_url=[link da imagem do seu footer])
+                        await message.channel.send(embed=embedBBC)
+                    else:
+                        msgBBC = await message.channel.send(
+                            f'{message.author.mention} **não há resultados para essa pesquisa na BBC.**'
+                        )
+                        await message.delete()
+                        await msgBBC.delete(delay=5)
+
+            except IndexError as erro:
+                msgBBC = await message.channel.send(
+                    f'{message.author.mention} **não há resultados para essa pesquisa na BBC.** `{erro}`'
+                )
+                await message.delete()
+                await msgBBC.delete(delay=5)
+
     else:
     
         if message.content.startswith('>help'):
@@ -518,6 +705,40 @@ async def on_message(message):
                 await message.delete()
                 await dolar.delete(delay=5)        
 
+        if message.content.startswith('>fox'):
+            sitefox = requests.get('https://randomfox.ca/floof')
+            dicionariofox = sitefox.json()
+            link = dicionariofox['image']
+            embed8 = discord.Embed(title='🦊 Fox!',
+                                   description='',
+                                   url=f'{link}',
+                                   color=0x92481a)
+            embed8.set_image(url=f'{link}')
+            await message.channel.send(embed=embed8)
+
+        if message.content.startswith('>bird'):
+            num = randint(1, 100)
+            sitebird = requests.get(f'http://shibe.online/api/birds?count={num}&urls=true&httpsUrls=true')
+            listabird = sitebird.json()
+            link = listabird[0]
+            embed8 = discord.Embed(title='🐦 Bird!',
+                                   description='',
+                                   url=f'{link}',
+                                   color=0xdd2e44)
+            embed8.set_image(url=f'{link}')
+            await message.channel.send(embed=embed8)
+
+        if message.content.startswith('>duck'):
+            sitefox = requests.get('https://random-d.uk/api/v2/quack')
+            dicionarioduck = sitefox.json()
+            link = dicionarioduck['url']
+            embed8 = discord.Embed(title='🦆 Duck!',
+                                   description='',
+                                   url=f'{link}',
+                                   color=0x8ea031)
+            embed8.set_image(url=f'{link}')
+            await message.channel.send(embed=embed8)
+                
         channel0 = client.get_channel([id do canal em que todas as mensagens recebem uma reação predefinida])
         if message.channel == channel0:
             await message.add_reaction('[\emoji da reação que você quer que seja adicionada]')
