@@ -8,6 +8,7 @@ from random import choice, randint
 import json
 import requests
 from bs4 import BeautifulSoup
+from pexels_api import API
 
 intents = discord.Intents.all()
 client = discord.Client(intents=intents)
@@ -739,6 +740,34 @@ async def on_message(message):
                                    color=0x8ea031)
             embed8.set_image(url=f'{link}')
             await message.channel.send(embed=embed8)
+                   
+        if message.content.startswith('>pexels'):
+            try:
+                args = message.content.split()
+                args.pop(0)
+                if len(args) > 0:
+                    busca = ' '.join(args)
+                    PEXELS_API_KEY = '[Insira sua chave da API]'
+                    api = API(PEXELS_API_KEY)
+                    api.search(busca, page=1, results_per_page=20)
+                    photos = api.get_entries()
+                    num = randint(0, 20)
+                    foto = photos[num]
+                    embed = discord.Embed(
+                        title='📷 ┃ Image from Pexels!',
+                        description=f'*Fotógrafo:* {foto.photographer}',
+                        url=foto.url,
+                        color=0x05a081)
+                    embed.set_image(url=foto.original)
+                    await message.channel.send(embed=embed)
+                else:
+                    return
+            except IndexError as erro:
+                msgpexels1 = await message.channel.send(
+                    f'{message.author.mention}, sua busca não teve resultados no Pexels. `{erro}`'
+                )
+                await message.delete()
+                await msgpexels1.delete(delay=3)
                 
         channel0 = client.get_channel([id do canal em que todas as mensagens recebem uma reação predefinida])
         if message.channel == channel0:
